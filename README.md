@@ -10,7 +10,7 @@ Assume you are already dealing with a working Elixir install.
 Install the host archive, we will use it to build the host locally.
 
 ```
-$ mix archive.install https://github.com/dm1try/neovim_host/raw/master/nvim.ez
+$ mix archive.install https://github.com/dm1try/nvim/releases/download/v0.1.1-alpha/nvim.ez
 ```
 
 Build and install the host by running `nvim.install` and providing the path to nvim config(`~/.config/nvim` by default on linux systems)
