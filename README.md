@@ -101,6 +101,14 @@ do
 end
 ```
 ## Basic scripts
-This example demonstrates the highlighting of outdated packeges in your mix.exs
+"Hello" from plug:
+```elixir
+# ~/.config/nvim/rplugin/elixir/scripts/my_plug.exs
+defmodule MyPlug do
+  use NVim.Plugin
+  
+  command hello_from_plug do
+    NVim.Session.vim_command "echo 'hello'"
+  end
+end
 ```
-# ~/.config/nvim/rplugin/elixir/scripts/highlight_outdated_packages.exs
