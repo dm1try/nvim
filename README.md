@@ -53,7 +53,7 @@ end
 ```
 #### Functions
 `function` defines the vim function
-```
+```elixir
 function wrong_sum(left, right) do
   {:ok, left - right}
 end
@@ -63,7 +63,7 @@ use it in the editor `:echo WrongSum(1,2)`
 #### Commands
 `command` defines the command.
 
-```
+```elixir
 command just_echo do
   NVim.Session.vim_command("echo from remote plugin")
 end
@@ -89,7 +89,7 @@ end
 ```
 ### Pre-evaluated values
 Any vim value can be pre-evaluated before the action will be triggered:
-```
+```elixir
 on_event :cursor_hold_i,
   pre_evaluate: %{
     "expand('cWORD')" => word_under_cursor
