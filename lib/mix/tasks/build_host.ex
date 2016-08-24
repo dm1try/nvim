@@ -97,6 +97,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
           ~s({:#{plugin_name}, path: "#{plugin_path}", in_umbrella: true}) end)
       |> Enum.join(",")
 
+    Application.load(:nvim)
     host_mixfile_template(plugin_deps: plugin_deps, nvim_version: Application.spec(:nvim)[:vsn])
   end
 
