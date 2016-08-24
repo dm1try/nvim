@@ -1,0 +1,9 @@
+/**/**/_build
+/cover
+/**/**/deps
+/tmp
+/spec/fixtures/xdg_home/nvim/plugin/*
+/spec/fixtures/xdg_home/nvim/rplugin/*
+erl_crash.dump
+*.ez
+

@@ -1,0 +1,15 @@
+" elixir plugins
+call remote#host#RegisterPlugin('elixir', '/home/dmitry/Work/Projects/nvim/spec/fixtures/xdg_home/nvim/rplugin/elixir/apps/host/', [
+      \ {'sync': v:false, 'name': 'ElixirHostInfo', 'opts': {}, 'type': 'command'},
+     \ ])
+
+
+" python3 plugins
+
+
+" ruby plugins
+
+
+" python plugins
+
+
