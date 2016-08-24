@@ -27,9 +27,9 @@ Currently, each time you somehow update remote plugins you should run `:UpdateEl
 ## Structure
 
 Host supports two types of plugins:
-1. Scripts (an elixir script that usually contains simple logic and does not depend on other libs/does not need the versioning/etc).
+  1. Scripts (an elixir script that usually contains simple logic and does not depend on other libs/does not need the versioning/etc).
 
-2. Applications (an OTP application that is implemented as part of host umbrella project). You can find more information about umbrella projects [here](http://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-apps.html).
+  2. Applications (an OTP application that is implemented as part of host umbrella project). You can find more information about umbrella projects [here](http://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-apps.html).
 
 Host with plugins lives in `rplugin/elixir` of neovim config directory.
 Typical files tree for such dir:
