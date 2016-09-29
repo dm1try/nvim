@@ -22,13 +22,4 @@ ESpec.configure fn(config) ->
   end
 end
 
-System.cmd("mix", ["nvim.install", "#{__DIR__}/fixtures/xdg_home/nvim"])
-
-File.cd! "#{__DIR__}/fixtures/xdg_home/nvim/rplugin/elixir/apps/host", fn->
-   Mix.shell.info [:yellow, "\tBuilding host application..."]
-
-  System.cmd("mix", ["nvim.build_host",
-     "--xdg-home-path", "#{__DIR__}/fixtures/xdg_home",
-    "--vim-rc-path", "#{__DIR__}/fixtures/xdg_home/nvim/init.vim"])
-    end
-
+NVim.Test.Integration.setup_host("#{__DIR__}/fixtures")

@@ -6,6 +6,7 @@ defmodule NVim.Mixfile do
      version: "0.1.1",
      preferred_cli_env: [espec: :test],
      elixir: "~> 1.3.0",
+     elixirc_paths: ["lib", "installer"],
      deps: deps,
      package: package,
      description: "Neovim elixir host"]
@@ -13,7 +14,7 @@ defmodule NVim.Mixfile do
 
   defp package do
      [name: :nvim,
-     files: ["lib", "mix.exs", "README*"],
+     files: ["lib", "installer", "mix.exs", "README*"],
      licenses: ["Apache 2.0"]]
   end
 
