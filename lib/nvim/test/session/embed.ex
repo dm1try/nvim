@@ -14,7 +14,12 @@ defmodule NVim.Test.Session.Embed do
   end
 
   def start_link(args \\ []) do
-    Supervisor.start_link(__MODULE__, args)
+    response = Supervisor.start_link(__MODULE__, args)
+    # totally ugly :)
+    session_name = Keyword.get(args, :session_name, NVim.Session)
+    inject_methods(session_name)
+
+    response
   end
 
   def init(args) do
@@ -39,6 +44,13 @@ defmodule NVim.Test.Session.Embed do
     ]
 
     supervise(children, strategy: :one_for_one)
+  end
+
+  def inject_methods(session) do
+    {:ok, [_, response] }= MessagePack.RPC.Session.call(session, "vim_get_api_info",[])
+
+    function_specs = Map.fetch!(response,"functions")
+    NVim.API.injects_methods(function_specs, session)
   end
 
   def stop(pid) do
