@@ -2,6 +2,15 @@
 
 Implements support for Neovim remote plugins written in Elixir.
 
+```elixir
+                   +--------------------------+
++--------+ MsgPack |              +---------+ |
+|        |   RPC   | +------+     |         | |
+| Neovim <---------> | Host <-----> Plugins | |
+|        |         | +------+     |         | |
++--------+         |              +---------+ |
+                   +--------------------------+
+```
 
 ## Installation
 
@@ -21,7 +30,9 @@ $ mix nvim.install /path/to/nvim/config
 
 ## Usage
 
-Currently, each time you somehow update remote plugins you should run `:UpdateElixirPlugins` nvim command(the wrapper for `:UpdateRemotePlugins`). See `:h remote-plugins-manifest` for the clarification why the manifest is needed(generally, it saves the neovim startup time if remote plugins are installed).
+Currently, each time you somehow update remote plugins you should run `:UpdateElixirPlugins` nvim command.
+
+See `:h remote-plugin-manifest` for the clarification why the manifest is needed(generally, it saves the neovim startup time if remote plugins are installed).
 
 # Plugin Development
 ## Structure
