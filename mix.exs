@@ -15,7 +15,9 @@ defmodule NVim.Mixfile do
   defp package do
      [name: :nvim,
      files: ["lib", "installer", "mix.exs", "README*"],
-     licenses: ["Apache 2.0"]]
+     licenses: ["Apache 2.0"],
+     maintainers: ["Dmitry Dedov"],
+     links: %{"GitHub" => "https://github.com/dm1try/nvim"}]
   end
 
   def application do
