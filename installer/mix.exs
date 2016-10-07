@@ -3,7 +3,7 @@ defmodule NVim.Installer.Mixfile do
 
   def project do
     [app: :nvim_installer,
-     version: "0.1.2",
+     version: "0.2.0",
      elixir: "~> 1.3"]
   end
 

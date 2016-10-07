@@ -3,7 +3,7 @@ defmodule NVim.Mixfile do
 
   def project do
     [app: :nvim,
-     version: "0.1.2",
+     version: "0.2.0",
      preferred_cli_env: [espec: :test],
      elixir: "~> 1.3.0",
      elixirc_paths: ["lib", "installer"],
