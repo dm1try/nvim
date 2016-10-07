@@ -1,6 +1,10 @@
 defmodule NVim.Test.Session.Embed do
   use Supervisor
 
+  @params_to_env [xdg_home_path: 'XDG_CONFIG_HOME',
+                  xdg_data_path: 'XDG_DATA_PATH',
+                  vim_rc_path: 'MYVIMRC']
+
   defmodule NullHandler do
     require Logger
 
@@ -25,8 +29,9 @@ defmodule NVim.Test.Session.Embed do
   def init(args) do
     session_name = Keyword.get(args, :session_name, NVim.Session)
     port_name = Module.concat(session_name, Port)
-    xdg_home_path = Keyword.get(args, :xdg_home_path)
+
     vim_rc_path = Keyword.get(args, :vim_rc_path)
+    env_params = Keyword.take(args, Keyword.keys(@params_to_env))
 
     file = Keyword.get(args, :file)
 
@@ -34,7 +39,7 @@ defmodule NVim.Test.Session.Embed do
       worker(MessagePack.Transports.Port, [
         [link: {:spawn, "nvim --embed #{vim_rc_opt(vim_rc_path)} #{file}"},
          session: session_name,
-         settings: port_settings(xdg_home_path, vim_rc_path)],
+         settings: port_settings(env_params)],
         [name: port_name],
       ]),
       worker(MessagePack.RPC.Session, [
@@ -60,14 +65,11 @@ defmodule NVim.Test.Session.Embed do
   defp vim_rc_opt(nil = _vim_rc_path), do: "-u NONE"
   defp vim_rc_opt(vim_rc_path), do: "-u #{vim_rc_path}"
 
-  defp port_settings(xdg_home_path, vim_rc_path)
-    when is_nil(xdg_home_path) and is_nil(vim_rc_path), do: []
-  defp port_settings(xdg_home_path, vim_rc_path) do
-    [ env:
-      [
-        { 'XDG_CONFIG_HOME', String.to_charlist(xdg_home_path) },
-        { 'MYVIMRC', String.to_charlist(vim_rc_path) }
-      ]
-    ]
+  defp port_settings(env_params) do
+    params = Enum.map env_params, fn({key, value})->
+      {@params_to_env[key], String.to_charlist(value)}
+    end
+
+    [env: params]
   end
 end
