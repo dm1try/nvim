@@ -25,9 +25,9 @@ defmodule NVim.Mixfile do
   end
 
   defp deps do
-    [{:logger_file_backend, ">= 0.0.0"},
+    [{:logger_file_backend, "~> 0.0.9"},
      {:msgpack_rpc, ">= 0.1.1"},
-     {:espec, ">= 0.0.0", only: [:test, :dev]},
-     {:ex_doc, ">= 0.0.0", only: :dev}]
+     {:espec, "~> 1.1.0", only: [:test, :dev]},
+     {:ex_doc, "~> 0.14.1", only: :dev}]
   end
 end
