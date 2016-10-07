@@ -9,4 +9,9 @@ defmodule NVim.Host.Plugin do
 
     NVim.Session.vim_command "echomsg '#{message}'"
   end
+
+  command elixir_host_log do
+    log_path = Application.get_env(:logger, :error_log)[:path]
+    NVim.Session.vim_command "bot new | res 15 | set wfh | term tail -f #{log_path}"
+  end
 end
