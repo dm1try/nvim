@@ -47,7 +47,7 @@ defmodule NVim.Test.Session.Embed do
   end
 
   def inject_methods(session) do
-    {:ok, [_, response] }= MessagePack.RPC.Session.call(session, "vim_get_api_info",[])
+    {:ok, [_, response] }= MessagePack.RPC.Session.call(session, "nvim_get_api_info",[])
 
     function_specs = Map.fetch!(response,"functions")
     NVim.API.injects_methods(function_specs, session)

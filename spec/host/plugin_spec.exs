@@ -3,11 +3,11 @@ defmodule NVim.Host.PluginSpec do
   alias MessagePack.RPC.Session
 
   it "displays host information" do
-    {:ok, _} = Session.call(TestSession, "vim_command", ["ElixirHostInfo"])
+    {:ok, _} = Session.call(TestSession, "nvim_command", ["ElixirHostInfo"])
 
     :timer.sleep 50 # suc.. but ElixirHostInfo is async
 
-    {:ok, response} = Session.call(TestSession, "vim_command_output", ["messages"])
+    {:ok, response} = Session.call(TestSession, "nvim_command_output", ["messages"])
 
     last_message = response |> String.split("\n") |> List.last
 

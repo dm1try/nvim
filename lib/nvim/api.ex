@@ -18,7 +18,7 @@ defmodule NVim.API do
   end
 
   def inject(session) do
-    {:ok, [_, response] }= MessagePack.RPC.Session.call(session, "vim_get_api_info",[])
+    {:ok, [_, response] }= MessagePack.RPC.Session.call(session, "nvim_get_api_info",[])
 
     api_types = Map.fetch!(response,"types")
     inject_nvim_types(api_types)

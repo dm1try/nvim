@@ -61,7 +61,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
 
   defp plugin_apps_in_vim_runtime do
     {:ok, response} = MessagePack.RPC.Session.call(
-      NVim.Installer.Session, "vim_eval",
+      NVim.Installer.Session, "nvim_eval",
       ["globpath(&rtp, 'rplugin/elixir/apps/*')"]
     )
 
@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   end
 
   defp update_neovim_remote_plugins do
-    {:ok, response} = MessagePack.RPC.Session.call(NVim.Installer.Session, "vim_command_output", ["UpdateRemotePlugins"])
+    {:ok, response} = MessagePack.RPC.Session.call(NVim.Installer.Session, "nvim_command_output", ["UpdateRemotePlugins"])
 
     if Regex.match?(~r/elixir host registered plugins/, response) do
       Mix.shell.info [:green, """
