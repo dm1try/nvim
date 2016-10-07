@@ -1,4 +1,4 @@
-defmodule NVim.Test.Session.Embed do
+defmodule NVim.Session.Embed do
   use Supervisor
 
   @params_to_env [xdg_home_path: 'XDG_CONFIG_HOME',

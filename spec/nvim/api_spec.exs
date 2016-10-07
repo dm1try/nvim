@@ -1,7 +1,7 @@
 defmodule NVim.ApiSpec do
   use ESpec
   alias MessagePack.RPC
-  alias NVim.Test.Session
+  alias NVim.Session
 
   @session_name ApiSession
 

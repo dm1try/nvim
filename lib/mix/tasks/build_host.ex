@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   @shortdoc "Build host with all complided plugins founded in neovim runtime"
 
   @nvim_session NVim.Installer
-  alias NVim.Test.Session.Embed, as: EmbedNVim
+  alias NVim.Session.Embed, as: EmbedNVim
 
   def run(argv) do
     {opts, _argv} = OptionParser.parse!(argv)
