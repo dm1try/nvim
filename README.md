@@ -2,16 +2,6 @@
 
 Implements support for Neovim remote plugins written in Elixir.
 
-```elixir
-                   +--------------------------+
-+--------+ MsgPack |              +---------+ |
-|        |   RPC   | +------+     |         | |
-| Neovim <---------> | Host <-----> Plugins | |
-|        |         | +------+     |         | |
-+--------+         |              +---------+ |
-                   +--------------------------+
-```
-
 ## Installation
 
 Assume you are already dealing with a working Elixir install.
@@ -34,7 +24,17 @@ Currently, each time you somehow update remote plugins you should run `:UpdateEl
 
 See `:h remote-plugin-manifest` for the clarification why the manifest is needed(generally, it saves the neovim startup time if remote plugins are installed).
 
-# Plugin Development
+# Plugin Development (Developers only)
+
+```elixir
+                   +--------------------------+
++--------+ MsgPack |              +---------+ |
+|        |   RPC   | +------+     |         | |
+| Neovim <---------> | Host <-----> Plugins | |
+|        |         | +------+     |         | |
++--------+         |              +---------+ |
+                   +--------------------------+
+```
 ## Structure
 
 Host supports two types of plugins:
