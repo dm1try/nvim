@@ -4,12 +4,15 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   import Mix.Generator
   @shortdoc "Build host with all complided plugins founded in neovim runtime"
 
+  @nvim_session NVim.Installer
+  alias NVim.Test.Session.Embed, as: EmbedNVim
+
   def run(argv) do
     {opts, _argv} = OptionParser.parse!(argv)
 
     if File.dir?("../host") do
       session_opts = Keyword.take(opts, [:xdg_home_path, :vim_rc_path])
-      start_neovim_session(session_opts)
+      EmbedNVim.start_link([session_name: @nvim_session] ++ session_opts)
 
       create_file "mix.exs", host_mixfile, force: true
 
@@ -22,54 +25,13 @@ defmodule Mix.Tasks.Nvim.BuildHost do
     end
   end
 
-  defp start_neovim_session(args) do
-    xdg_home_path = Keyword.get(args, :xdg_home_path)
-    vim_rc_path = Keyword.get(args, :vim_rc_path)
-
-    {:ok, _port} = MessagePack.Transports.Port.start_link(
-     [link: {:spawn, spawn_command(vim_rc_path)},
-      settings: port_settings(xdg_home_path, vim_rc_path),
-      session: NVim.Installer.Session],[name: NVim.Installer.Port])
-
-    {:ok, _session} = MessagePack.RPC.Session.start_link(
-     [method_handler: NVim.Host.Handler,
-      transport: NVim.Installer.Port ],[ name: NVim.Installer.Session ])
-  end
-
-  defp spawn_command(vim_rc_path) when is_nil(vim_rc_path) do
-    "nvim --embed"
-  end
-
-  defp spawn_command(vim_rc_path) do
-    "nvim --embed -u #{vim_rc_path}"
-  end
-
-  defp port_settings(xdg_home_path, vim_rc_path)
-    when is_nil(xdg_home_path) and is_nil(vim_rc_path)
-  do
-    []
-  end
-
-  defp port_settings(xdg_home_path, vim_rc_path) do
-    [ env:
-      [
-        { 'XDG_CONFIG_HOME', String.to_charlist(xdg_home_path) },
-        { 'MYVIMRC', String.to_charlist(vim_rc_path) }
-      ]
-    ]
-  end
-
   defp plugin_apps_in_vim_runtime do
-    {:ok, response} = MessagePack.RPC.Session.call(
-      NVim.Installer.Session, "nvim_eval",
-      ["globpath(&rtp, 'rplugin/elixir/apps/*')"]
-    )
-
+    {:ok, response} = @nvim_session.nvim_eval("globpath(&rtp, 'rplugin/elixir/apps/*')")
     String.split(response, "\n")
   end
 
   defp update_neovim_remote_plugins do
-    {:ok, response} = MessagePack.RPC.Session.call(NVim.Installer.Session, "nvim_command_output", ["UpdateRemotePlugins"])
+    {:ok, response} = @nvim_session.nvim_command_output("UpdateRemotePlugins")
 
     if Regex.match?(~r/elixir host registered plugins/, response) do
       Mix.shell.info [:green, """
