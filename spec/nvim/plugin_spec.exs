@@ -156,6 +156,10 @@ defmodule NVim.PluginSpec do
         do
           {"command_with_all_opts", [[range_start,range_end], [params], [current_column]]}
         end
+
+        command command_with_complete, complete: "file" do
+          "command_with_complete"
+        end
       end
 
       let :plugin, do: PlugWithCommands
@@ -164,6 +168,7 @@ defmodule NVim.PluginSpec do
       let :command_with_eval_spec, do: Enum.at(plugin.specs, 2)
       let :command_with_range_spec, do: Enum.at(plugin.specs, 3)
       let :command_with_all_opts_spec, do: Enum.at(plugin.specs, 4)
+      let :command_with_complete_spec, do: Enum.at(plugin.specs, 5)
 
       it "creates a proper specification" do
         expect(simple_command_spec) |> to(have {:type, "command"})
@@ -183,6 +188,8 @@ defmodule NVim.PluginSpec do
         expect(command_with_all_opts_spec.opts) |> to(have {:nargs, "*"})
         expect(command_with_all_opts_spec.opts) |> to(have {:eval, "[some_value_eval]"})
         expect(command_with_all_opts_spec.opts) |> to(have {:range, "%"})
+
+        expect(command_with_complete_spec.opts) |> to(have {:complete, "file"})
       end
 
       it "addes command handlers" do

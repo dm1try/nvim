@@ -84,6 +84,7 @@ defmodule NVim.Plugin do
         %{}
         |> add_command_params_opt(command_params)
         |> add_range_opt(opts[:range])
+        |> add_complete_opt(opts[:complete])
         |> add_eval_opts(opts[:pre_evaluate])
 
       spec =
@@ -117,6 +118,9 @@ defmodule NVim.Plugin do
 
     defp add_range_opt(opts, nil = _range), do: opts
     defp add_range_opt(opts, _range), do: Map.put(opts, :range, "%")
+
+    defp add_complete_opt(opts, nil), do: opts
+    defp add_complete_opt(opts, complete), do: Map.put(opts, :complete, to_string(complete))
 
     defp injected_function_params_param(nil), do: nil
     defp injected_function_params_param(function_params) do
