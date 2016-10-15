@@ -148,13 +148,13 @@ defmodule NVim.PluginSpec do
           {"command_with_range", [range_start, range_end]}
         end
 
-        command command_with_all_opts(param1, param2),
+        command command_with_all_opts(params),
         pre_evaluate: %{
           "some_value_eval" => current_column
         },
         range: true
         do
-          {"command_with_all_opts", [[range_start,range_end], [param1,param2], [current_column]]}
+          {"command_with_all_opts", [[range_start,range_end], [params], [current_column]]}
         end
       end
 
@@ -190,7 +190,10 @@ defmodule NVim.PluginSpec do
         |> to(eq {:ok, "simple_command"})
 
         expect(PlugWithCommands.handle_rpc_method("command", "CommandWithParams", [["some_param"]]))
-        |> to(eq {:ok, {"command_with_params", "some_param"}})
+        |> to(eq {:ok, {"command_with_params", ["some_param"]}})
+
+        expect(PlugWithCommands.handle_rpc_method("command", "CommandWithParams", [["some_param","another_param"]]))
+        |> to(eq {:ok, {"command_with_params", ["some_param", "another_param"]}})
 
         expect(PlugWithCommands.handle_rpc_method("command", "CommandWithEval", [["current_column_value"]]))
         |> to(eq {:ok, {"command_with_eval", "current_column_value"}})
@@ -200,7 +203,7 @@ defmodule NVim.PluginSpec do
 
         expect(PlugWithCommands.handle_rpc_method("command", "CommandWithAllOpts",
           [[0,10],["param1", "param2"],["evaluated_value"]]))
-        |> to(eq {:ok, {"command_with_all_opts", [[0,10],["param1", "param2"],["evaluated_value"]]}})
+        |> to(eq {:ok, {"command_with_all_opts", [[0,10],[["param1", "param2"]],["evaluated_value"]]}})
       end
     end
 end

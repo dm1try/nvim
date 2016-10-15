@@ -81,6 +81,10 @@ end
 ```
 use it in the editor `:JustEcho`
 
+Only single param can be defined for a command.
+This param holds an array of strings provided on the command call.
+Elixir `OptionParser` is good choice here.
+
 ### Session
 In the latest example we used `vim_command` method which is part of Neovim remote API.
 In the examples below we asume that we import `NVim.Session` in context of plugin.

@@ -132,9 +132,8 @@ defmodule NVim.Plugin do
 
     defp injected_command_params_param(nil), do: nil
     defp injected_command_params_param(command_params) do
-      command_params
-      |> Enum.map(fn({k, _, _}) -> Macro.var(k, nil) end)
-      |> Enum.to_list
+      [{name, _, _}] = command_params
+      Macro.var(name, nil)
     end
 
     defp injected_eval_param(nil), do: nil
