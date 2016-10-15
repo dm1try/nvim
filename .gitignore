@@ -2,6 +2,7 @@
 /cover
 /**/**/deps
 /tmp
+/doc
 /spec/fixtures/xdg_home/nvim/plugin/*
 /spec/fixtures/xdg_home/nvim/rplugin/*
 erl_crash.dump
