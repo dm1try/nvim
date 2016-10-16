@@ -40,7 +40,13 @@ defmodule NVim.PluginManager do
             bootstrap_module(module, plugins, path)
             {:reply, {:ok, module}, plugins}
           else
-            [{module, _}] = Code.load_file(path)
+            loaded = Code.load_file(path)
+            module = Enum.find_value loaded, fn({mod,_code})->
+              function_exported?(mod, :specs, 0) && mod
+            end
+
+            if !module, do: raise("Specs not found. Make sure you are using NVim.Plugin in your script")
+
             Logger.info("Loading script plugin: #{path}, module: #{inspect module}")
 
             bootstrap_module(module, plugins, path)
