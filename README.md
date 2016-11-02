@@ -1,10 +1,11 @@
 # Neovim Elixir host
 
 Implements support for Neovim remote plugins written in Elixir.
-
+## Requirements
+  - Neovim >= 1.6-dev
+  - Elixir >= 1.3
+  
 ## Installation
-
-Assume you are already dealing with a working Elixir install.
 
 Install the host archive, we will use it to build the host locally.
 
@@ -66,7 +67,7 @@ end
 `function` defines the vim function
 ```elixir
 function wrong_sum(left, right) do
-  {:ok, left - right}
+  left - right
 end
 ```
 use it in the editor `:echo WrongSum(1,2)`
@@ -127,3 +128,12 @@ defmodule MyPlug do
   end
 end
 ```
+## Debugging scripts.
+`ElixirHostLog` opens the host log.  
+ Log severety level can be changed in the host config.
+ > `~/.config/nvim/rplugin/elixir/apps/host/config/config.exs` is default path on linux
+ 
+ `ElixirReloadScript` reloads running script.
+ > This works only for the reloading an implementation of already defined command/function/event.  
+ > This means if you add/remove some definition or change its option(`pre_evaluate` for example) you should restart the editor.
+
