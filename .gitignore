@@ -3,8 +3,7 @@
 /**/**/deps
 /tmp
 /doc
-/spec/fixtures/xdg_home/nvim/plugin/*
-/spec/fixtures/xdg_home/nvim/rplugin/*
+/spec/fixtures/xdg_*
 erl_crash.dump
 *.ez
 
