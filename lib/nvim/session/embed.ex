@@ -3,7 +3,8 @@ defmodule NVim.Session.Embed do
 
   @params_to_env [xdg_home_path: 'XDG_CONFIG_HOME',
                   xdg_data_path: 'XDG_DATA_PATH',
-                  vim_rc_path: 'MYVIMRC']
+                  vim_rc_path: 'MYVIMRC',
+                  nvim_rplugin_manifest: 'NVIM_RPLUGIN_MANIFEST']
 
   defmodule NullHandler do
     require Logger

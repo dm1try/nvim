@@ -19,7 +19,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
 
     session_opts =
       opts
-      |> Keyword.take([:xdg_home_path, :vim_rc_path])
+      |> Keyword.take([:xdg_home_path, :xdg_data_path, :vim_rc_path, :nvim_rplugin_manifest])
       |> Keyword.put_new(:vim_rc_path, Path.expand("../../init.vim"))
 
     EmbedNVim.start_link([session_name: @nvim_session] ++ session_opts)
