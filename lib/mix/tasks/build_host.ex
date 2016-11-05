@@ -5,7 +5,10 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   @shortdoc "Build host with all complided plugins founded in neovim runtime"
 
   @nvim_session NVim.Installer
+  # TODO: try to disable Xref compiler warnings for this "dynamic" module
+
   alias NVim.Session.Embed, as: EmbedNVim
+  alias MessagePack.RPC
 
   @host_path "apps/host"
 
@@ -31,7 +34,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   end
 
   defp plugin_apps_in_vim_runtime do
-    case @nvim_session.nvim_eval("globpath(&rtp, 'rplugin/elixir/apps/*')") do
+    case RPC.Session.call(@nvim_session, "nvim_eval", ["globpath(&rtp, 'rplugin/elixir/apps/*')"]) do
       {:ok, ""} -> []
       {:ok, response} -> String.split(response, "\n")
       _ -> []
@@ -39,7 +42,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   end
 
   defp update_neovim_remote_plugins do
-    {:ok, response} = @nvim_session.nvim_command_output("UpdateRemotePlugins")
+    {:ok, response} = RPC.Session.call(@nvim_session, "nvim_command_output", ["UpdateRemotePlugins"])
 
     if Regex.match?(~r/elixir host registered plugins/, response) do
       Mix.shell.info [:green, """
