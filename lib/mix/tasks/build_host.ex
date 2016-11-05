@@ -7,27 +7,35 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   @nvim_session NVim.Installer
   alias NVim.Session.Embed, as: EmbedNVim
 
+  @host_path "apps/host"
+
   def run(argv) do
     {opts, _argv} = OptionParser.parse!(argv)
 
-    if File.dir?("../host") do
-      session_opts = Keyword.take(opts, [:xdg_home_path, :vim_rc_path])
-      EmbedNVim.start_link([session_name: @nvim_session] ++ session_opts)
+    File.mkdir_p! @host_path
 
-      create_file "mix.exs", host_mixfile, force: true
+    session_opts =
+      opts
+      |> Keyword.take([:xdg_home_path, :vim_rc_path])
+      |> Keyword.put_new(:vim_rc_path, Path.expand("../../init.vim"))
 
-      System.cmd "mix", ["deps.get"]
-      System.cmd "mix", ["escript.build", "--force"]
+    EmbedNVim.start_link([session_name: @nvim_session] ++ session_opts)
 
-      update_neovim_remote_plugins
-    else
-      Mix.shell.info [:red, "host application is required for this task."]
+    create_file Path.join([@host_path, "mix.exs"]), host_mixfile, force: true
+    create_file Path.join([@host_path, "config", "config.exs"]), host_config_text, force: true
+
+    case System.cmd "mix", ["do", "deps.get,","escript.build", "--force"], cd: @host_path do
+      {_, 0} -> update_neovim_remote_plugins()
+      _ -> :ignore
     end
   end
 
   defp plugin_apps_in_vim_runtime do
-    {:ok, response} = @nvim_session.nvim_eval("globpath(&rtp, 'rplugin/elixir/apps/*')")
-    String.split(response, "\n")
+    case @nvim_session.nvim_eval("globpath(&rtp, 'rplugin/elixir/apps/*')") do
+      {:ok, ""} -> []
+      {:ok, response} -> String.split(response, "\n")
+      _ -> []
+    end
   end
 
   defp update_neovim_remote_plugins do
@@ -42,6 +50,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
       Mix.shell.info [:red, """
 
       Problem with updating the remote plugins. See the elixir host log for more information.
+      #{inspect response}
       """]
     end
   end
@@ -88,9 +97,21 @@ defmodule Mix.Tasks.Nvim.BuildHost do
     end
 
     defp deps do
-      [{:nvim, "<%= @nvim_version %>"},
+      [{:nvim, "~> <%= @nvim_version %>"},
       <%= @plugin_deps %>]
     end
   end
+  """
+
+  embed_text :host_config, ~S"""
+  use Mix.Config
+
+  config :logger,
+    backends: [{LoggerFileBackend, :error_log}],
+    level: :error
+
+  config :logger, :error_log,
+    path: Path.expand("#{__DIR__}/../neovim_elixir_host.log"),
+    level: :error
   """
 end

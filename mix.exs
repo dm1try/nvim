@@ -6,7 +6,6 @@ defmodule NVim.Mixfile do
      version: "0.3.0",
      preferred_cli_env: [espec: :test],
      elixir: "~> 1.3.0",
-     elixirc_paths: ["lib", "installer"],
      deps: deps,
      package: package,
      description: "Neovim elixir host"]
