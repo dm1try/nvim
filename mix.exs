@@ -8,7 +8,8 @@ defmodule NVim.Mixfile do
      elixir: "~> 1.3.0",
      deps: deps,
      package: package,
-     description: "Neovim elixir host"]
+     description: "Neovim elixir host",
+     aliases: aliases]
   end
 
   defp package do
@@ -17,6 +18,10 @@ defmodule NVim.Mixfile do
      licenses: ["Apache 2.0"],
      maintainers: ["Dmitry Dedov"],
      links: %{"GitHub" => "https://github.com/dm1try/nvim"}]
+  end
+
+  defp aliases do
+    [espec: "espec --exclude integration"]
   end
 
   def application do
