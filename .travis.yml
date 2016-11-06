@@ -10,6 +10,8 @@ before_install:
   - sudo apt-get install neovim
 script:
   - mix espec
+  - cd installer && mix do archive.build, archive.install --force && cd ..
+  - mix espec.integration
 notifications:
   recipients:
     - me@dmitry.it
