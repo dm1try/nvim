@@ -4,7 +4,7 @@ Implements support for Neovim remote plugins written in Elixir.
 ## Requirements
   - Neovim >= 1.6-dev
   - Elixir >= 1.3
-  
+
 ## Installation
 
 Install the host archive, we will use it to build the host locally.
@@ -43,7 +43,10 @@ Host supports two types of plugins:
 
   2. Applications (an OTP application that is implemented as part of host umbrella project). You can find more information about umbrella projects [here](http://elixir-lang.org/getting-started/mix-otp/dependencies-and-umbrella-apps.html).
 
-Host with plugins lives in `rplugin/elixir` of neovim config directory.
+Host with plugins lives in `rplugin/elixir` neovim config directory.
+Script plugin name must have postfix `plugin` in his name.
+> Example `my_plugin.exs`
+
 Typical files tree for such dir:
 ```bash
 ~/.config/nvim/rplugin/elixir
@@ -119,7 +122,7 @@ end
 ## Basic scripts
 "Hello" from plug:
 ```elixir
-# ~/.config/nvim/rplugin/elixir/scripts/my_plug.exs
+# ~/.config/nvim/rplugin/elixir/scripts/my_plugin.exs
 defmodule MyPlug do
   use NVim.Plugin
 
@@ -129,11 +132,11 @@ defmodule MyPlug do
 end
 ```
 ## Debugging scripts.
-`ElixirHostLog` opens the host log.  
+`ElixirHostLog` opens the host log.
  Log severety level can be changed in the host config.
  > `~/.config/nvim/rplugin/elixir/apps/host/config/config.exs` is default path on linux
- 
+
  `ElixirReloadScript` reloads running script.
- > This works only for the reloading an implementation of already defined command/function/event.  
+ > This works only for the reloading an implementation of already defined command/function/event.
  > This means if you add/remove some definition or change its option(`pre_evaluate` for example) you should restart the editor.
 

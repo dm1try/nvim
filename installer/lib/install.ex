@@ -75,7 +75,7 @@ defmodule Mix.Tasks.Nvim.Install do
       \ ' More information can be found in elixir host log file.'
   endfunction
 
-  call remote#host#Register('elixir', '{scripts/*.exs,apps/*}', function('s:RequireElixirHost'))
+  call remote#host#Register('elixir', '{scripts/*_plugin.exs,apps/*}', function('s:RequireElixirHost'))
 
   function! UpdateElixirPlugins()
     execute '!cd ' . s:nvim_path . '/rplugin/elixir && mix nvim.build_host'

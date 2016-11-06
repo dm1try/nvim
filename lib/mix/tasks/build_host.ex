@@ -44,7 +44,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
   defp update_neovim_remote_plugins do
     {:ok, response} = RPC.Session.call(@nvim_session, "nvim_command_output", ["UpdateRemotePlugins"])
 
-    if Regex.match?(~r/elixir host registered plugins/, response) do
+    if Regex.match?(~r/elixir host registered/, response) do
       Mix.shell.info [:green, """
 
       Remote plugins were updated. Restart neovim instances.
