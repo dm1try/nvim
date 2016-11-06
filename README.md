@@ -18,6 +18,12 @@ Build and install the host by running `nvim.install` and providing the path to n
 ```
 $ mix nvim.install /path/to/nvim/config
 ```
+## Upgrade
+Same as the install step but if you have any problem try to remove the host at first:
+```
+mix nvim.remove /path/to/nvim/config
+mix nvim.install /path/to/nvim/config
+```
 
 ## Usage
 
