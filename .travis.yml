@@ -1,0 +1,15 @@
+language: elixir
+elixir:
+  - 1.3.3
+otp_release:
+  - 19.0
+sudo: required
+before_install:
+  - sudo add-apt-repository ppa:neovim-ppa/unstable -y
+  - sudo apt-get update -q
+  - sudo apt-get install neovim
+script:
+  - mix espec
+notifications:
+  recipients:
+    - me@dmitry.it
