@@ -21,7 +21,8 @@ defmodule NVim.Mixfile do
   end
 
   defp aliases do
-    [espec: "espec --exclude integration"]
+    [espec: "espec --exclude integration",
+     "espec.integration": ["compile", &setup_test_host/1, "espec --only integration --exclude none"]]
   end
 
   def application do
@@ -33,5 +34,14 @@ defmodule NVim.Mixfile do
      {:msgpack_rpc, ">= 0.1.1"},
      {:espec, "~> 1.1.0", only: [:test, :dev]},
      {:ex_doc, "~> 0.14.1", only: :dev}]
+  end
+
+  defp setup_test_host(_) do
+    fixtures_path = Path.expand("spec/fixtures")
+
+    NVim.Test.Integration.setup_host(
+      fixtures_path,
+      "let &rtp .= ',#{fixtures_path}/xdg_home/nvim'"
+    )
   end
 end
