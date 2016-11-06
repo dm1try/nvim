@@ -1,4 +1,4 @@
-# Neovim Elixir host
+# Neovim Elixir host [![Build Status](https://travis-ci.org/dm1try/nvim.svg?branch=master)](https://travis-ci.org/dm1try/nvim)
 
 Implements support for Neovim remote plugins written in Elixir.
 ## Requirements
