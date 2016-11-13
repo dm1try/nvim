@@ -86,7 +86,7 @@ use it in the editor `:echo WrongSum(1,2)`
 
 ```elixir
 command just_echo do
-  NVim.Session.vim_command("echo from remote plugin")
+  NVim.Session.nvim_command("echo 'from remote plugin'")
 end
 ```
 use it in the editor `:JustEcho`
@@ -96,22 +96,28 @@ This param holds an array of strings provided on the command call.
 Elixir `OptionParser` is good choice here.
 
 ### Session
-In the latest example we used `vim_command` method which is part of Neovim remote API.
+In the latest example we used `nvim_command` method which is part of Neovim remote API.
 In the examples below we asume that we import `NVim.Session` in context of plugin.
 
 ### State
 Each plugin is [GenServer](http://elixir-lang.org/docs/stable/elixir/GenServer.html).
 So you can share the state between all actions while the plugin is running:
 ```elixir
-on_event :cursor_moved do
-  state = %{state | {move_counts: state[:move_counts] + 1}
+def init(_args) do
+  {:ok, %{move_count: 0}}
 end
 
-command :show_moves_count do
-  moves_info = "Current moves: #{state[:move_count]}"
-  vim_command("echo '#{moves_info}'")
+on_event :cursor_moved do
+  state = %{state | move_count: state.move_count + 1}
+end
+
+command show_moves_count do
+  moves_info = "Current moves: #{state.move_count}"
+  nvim_command("echo '#{moves_info}'")
 end
 ```
+> NOTE: you cannot assing the state in inner scopes(`if/case/with/etc`). You should return the value from the scope and then assing it to the state in root scope.
+
 ### Pre-evaluated values
 Any vim value can be pre-evaluated before the action will be triggered:
 ```elixir
@@ -125,6 +131,7 @@ do
   end
 end
 ```
+
 ## Basic scripts
 "Hello" from plug:
 ```elixir
@@ -133,12 +140,12 @@ defmodule MyPlug do
   use NVim.Plugin
 
   command hello_from_plug do
-    NVim.Session.vim_command "echo 'hello'"
+    NVim.Session.nvim_command "echo 'hello'"
   end
 end
 ```
 ## Debugging scripts.
-`ElixirHostLog` opens the host log.
+`ElixirHostLog` opens the host log.   
  Log severety level can be changed in the host config.
  > `~/.config/nvim/rplugin/elixir/apps/host/config/config.exs` is default path on linux
 
