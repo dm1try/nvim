@@ -11,6 +11,6 @@
   "meck": {:hex, :meck, "0.8.4", "59ca1cd971372aa223138efcf9b29475bde299e1953046a0c727184790ab1520", [:rebar, :make], []},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
   "mimerl": {:hex, :mimerl, "1.0.2", "993f9b0e084083405ed8252b99460c4f0563e41729ab42d9074fd5e52439be88", [:rebar3], []},
-  "msgpack_rpc": {:hex, :msgpack_rpc, "0.1.1", "08ec03bc4a173c4845c8630a7a1d1a163bb574535f81fd03c066ddd34d51d934", [:mix], [{:msgpax, "~> 0.8.2", [hex: :msgpax, optional: false]}]},
+  "msgpack_rpc": {:hex, :msgpack_rpc, "0.1.2", "a9a0d9877b5cfb24cce5551c063ed38a4150507e687bdc310991fc793073839b", [:mix], [{:msgpax, "~> 0.8.2", [hex: :msgpax, optional: false]}]},
   "msgpax": {:hex, :msgpax, "0.8.2", "0e83d86e7cbf1bdcf7b870c25951df042ec19f9804a1a9c2fa59091a43ee2886", [:mix], []},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.0", "edee20847c42e379bf91261db474ffbe373f8acb56e9079acb6038d4e0bf414f", [:rebar, :make], []}}
