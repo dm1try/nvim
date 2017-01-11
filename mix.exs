@@ -5,11 +5,11 @@ defmodule NVim.Mixfile do
     [app: :nvim,
      version: "0.4.1",
      preferred_cli_env: [espec: :test],
-     elixir: "~> 1.3.0",
-     deps: deps,
-     package: package,
+     elixir: "~> 1.4.0",
+     deps: deps(),
+     package: package(),
      description: "Neovim elixir host",
-     aliases: aliases]
+     aliases: aliases()]
   end
 
   defp package do
