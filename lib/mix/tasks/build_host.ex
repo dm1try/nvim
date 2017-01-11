@@ -24,8 +24,8 @@ defmodule Mix.Tasks.Nvim.BuildHost do
 
     EmbedNVim.start_link([session_name: @nvim_session] ++ session_opts)
 
-    create_file Path.join([@host_path, "mix.exs"]), host_mixfile, force: true
-    create_file Path.join([@host_path, "config", "config.exs"]), host_config_text, force: true
+    create_file Path.join([@host_path, "mix.exs"]), host_mixfile(), force: true
+    create_file Path.join([@host_path, "config", "config.exs"]), host_config_text(), force: true
 
     case System.cmd "mix", ["do", "deps.get,","escript.build", "--force"], cd: @host_path do
       {_, 0} -> update_neovim_remote_plugins()
@@ -60,7 +60,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
 
   defp host_mixfile do
     depended_plugins =
-      plugin_apps_in_vim_runtime
+      plugin_apps_in_vim_runtime()
       |> Enum.filter(fn(app)-> Path.basename(app) != "host" end)
       |> Enum.uniq
 
