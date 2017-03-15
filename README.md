@@ -10,7 +10,7 @@ Implements support for Neovim remote plugins written in Elixir.
 Install the host archive, we will use it to build the host locally.
 
 ```
-$ mix archive.install https://github.com/dm1try/nvim/releases/download/v0.4.1/nvim.ez
+$ mix archive.install https://github.com/dm1try/nvim/releases/download/v0.4.2/nvim.ez
 ```
 
 Build and install the host by running `nvim.install` and providing the path to nvim config(`~/.config/nvim` by default on linux systems)
@@ -145,7 +145,7 @@ defmodule MyPlug do
 end
 ```
 ## Debugging scripts.
-`ElixirHostLog` opens the host log.   
+`ElixirHostLog` opens the host log.
  Log severety level can be changed in the host config.
  > `~/.config/nvim/rplugin/elixir/apps/host/config/config.exs` is default path on linux
 
