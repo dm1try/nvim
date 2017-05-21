@@ -33,8 +33,8 @@ defmodule NVim.ApiSpec do
   it "works with types" do
     import @session_name
 
-    {:ok, buffer} = nvim_get_current_buf
+    {:ok, buffer} = nvim_get_current_buf()
     expect(buffer_set_line(buffer, 0, "test")).to eq({:ok, nil})
-    expect(nvim_get_current_line).to eq({:ok, "test"})
+    expect(nvim_get_current_line()).to eq({:ok, "test"})
   end
 end

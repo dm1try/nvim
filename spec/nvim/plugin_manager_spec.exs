@@ -16,23 +16,23 @@ defmodule NVim.PluginManagerSpec do
     let :fixture_plugin_path, do: "spec/fixtures/plugin_app"
 
     before do
-      Mix.Project.in_project :plugin_app, fixture_plugin_path, fn(_)->
+      Mix.Project.in_project :plugin_app, fixture_plugin_path(), fn(_)->
         Mix.Tasks.Compile.run []
       end
     end
 
     it "lookups the plugin for provided path" do
-      {:ok, module} = PluginManager.lookup(fixture_plugin_path)
+      {:ok, module} = PluginManager.lookup(fixture_plugin_path())
       expect(module).to eq(PluginApp)
     end
 
     context "multiple lookups" do
       before do
-        PluginManager.lookup(fixture_plugin_path)
+        PluginManager.lookup(fixture_plugin_path())
       end
 
       it "lookups the plugin" do
-        expect(PluginManager.lookup(fixture_plugin_path)).to eq({:ok, PluginApp})
+        expect(PluginManager.lookup(fixture_plugin_path())).to eq({:ok, PluginApp})
       end
     end
   end
@@ -41,7 +41,7 @@ defmodule NVim.PluginManagerSpec do
     let :fixture_plugin_path, do: "spec/fixtures/plugin_script.exs"
 
     it "lookups the plugin for provided path" do
-      {:ok, module} = PluginManager.lookup(fixture_plugin_path)
+      {:ok, module} = PluginManager.lookup(fixture_plugin_path())
       expect(module).to eq(PluginScript)
     end
   end

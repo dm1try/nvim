@@ -2,7 +2,7 @@ defmodule NVim.PluginSpec do
   use ESpec
 
   before do
-    plugin.start_link
+    plugin().start_link
   end
 
   context "empty module" do
@@ -12,7 +12,7 @@ defmodule NVim.PluginSpec do
     let :plugin, do: EmptyPlugin
 
     it "returns empty specs" do
-      expect(plugin.specs).to eq([])
+      expect(plugin().specs).to eq([])
     end
   end
 
@@ -49,33 +49,33 @@ defmodule NVim.PluginSpec do
     end
 
     let :plugin, do: PluginWithEvents
-    let :simple_event_spec, do: Enum.at(plugin.specs, 0)
-    let :event_with_custom_pattern_spec, do: Enum.at(plugin.specs, 1)
-    let :event_with_eval_spec, do: Enum.at(plugin.specs, 2)
-    let :event_with_multiple_evals_spec, do: Enum.at(plugin.specs, 3)
+    let :simple_event_spec, do: Enum.at(plugin().specs, 0)
+    let :event_with_custom_pattern_spec, do: Enum.at(plugin().specs, 1)
+    let :event_with_eval_spec, do: Enum.at(plugin().specs, 2)
+    let :event_with_multiple_evals_spec, do: Enum.at(plugin().specs, 3)
 
     it "creates a proper specification" do
-      expect(simple_event_spec) |> to(have {:type, "autocmd"})
-      expect(simple_event_spec) |> to(have {:name, "Simple"})
-      expect(simple_event_spec) |> to(have {:sync, false})
-      expect(simple_event_spec.opts) |> to(have {:pattern, "*"})
+      expect(simple_event_spec()) |> to(have {:type, "autocmd"})
+      expect(simple_event_spec()) |> to(have {:name, "Simple"})
+      expect(simple_event_spec()) |> to(have {:sync, false})
+      expect(simple_event_spec().opts) |> to(have {:pattern, "*"})
 
-      expect(event_with_custom_pattern_spec.opts) |> to(have {:pattern, "*.ex"})
-      expect(event_with_eval_spec.opts) |> to(have {:eval, "[getcwd()]"})
-      expect(event_with_multiple_evals_spec.opts) |> to(have {:eval, "[getcwd(),current_column()]"})
+      expect(event_with_custom_pattern_spec().opts) |> to(have {:pattern, "*.ex"})
+      expect(event_with_eval_spec().opts) |> to(have {:eval, "[getcwd()]"})
+      expect(event_with_multiple_evals_spec().opts) |> to(have {:eval, "[getcwd(),current_column()]"})
     end
 
     it "addes command handlers" do
-      expect(plugin.handle_rpc_method("autocmd", "Simple:*", []))
+      expect(plugin().handle_rpc_method("autocmd", "Simple:*", []))
       |> to(eq {:ok, "simple_event"})
 
-      expect(plugin.handle_rpc_method("autocmd", "WithCustomPattern:*.ex", []))
+      expect(plugin().handle_rpc_method("autocmd", "WithCustomPattern:*.ex", []))
       |> to(eq {:ok, "event_with_custom_pattern"})
 
-      expect(plugin.handle_rpc_method("autocmd", "WithEvalValue:*", [["evaluated_value"]]))
+      expect(plugin().handle_rpc_method("autocmd", "WithEvalValue:*", [["evaluated_value"]]))
       |> to(eq {:ok, {"event_with_eval", "evaluated_value"}})
 
-      expect(plugin.handle_rpc_method("autocmd", "WithMultipleEvals:*", [["evaluated_value", "another_evaluated_value"]]))
+      expect(plugin().handle_rpc_method("autocmd", "WithMultipleEvals:*", [["evaluated_value", "another_evaluated_value"]]))
       |> to(eq {:ok, {"event_with_multiple_evals", ["evaluated_value", "another_evaluated_value"]}})
     end
   end
@@ -102,22 +102,22 @@ defmodule NVim.PluginSpec do
       end
 
       let :plugin, do: PlugWithFunction
-      let :simple_func_spec, do: hd(plugin.specs)
-      let :func_with_param_spec, do: List.at(plugin.specs, 1)
-      let :func_with_param_and_eval_spec, do: List.at(plugin.specs, 1)
+      let :simple_func_spec, do: hd(plugin().specs)
+      let :func_with_param_spec, do: List.at(plugin().specs, 1)
+      let :func_with_param_and_eval_spec, do: List.at(plugin().specs, 1)
 
       it "creates a proper spec" do
-        expect(simple_func_spec) |> to(have {:type, "function"})
-        expect(simple_func_spec) |> to(have {:name, "SimpleFunc"})
-        expect(simple_func_spec) |> to(have {:sync, true})
+        expect(simple_func_spec()) |> to(have {:type, "function"})
+        expect(simple_func_spec()) |> to(have {:name, "SimpleFunc"})
+        expect(simple_func_spec()) |> to(have {:sync, true})
       end
 
       it "addes function handlers" do
-        expect(plugin.handle_rpc_method("function", "SimpleFunc", []))
+        expect(plugin().handle_rpc_method("function", "SimpleFunc", []))
         |> to(eq {:ok, "simple_func"})
-        expect(plugin.handle_rpc_method("function", "FuncWithParam", [["test_param"]]))
+        expect(plugin().handle_rpc_method("function", "FuncWithParam", [["test_param"]]))
         |> to(eq {:ok, {"func_with_param", "test_param"}})
-        expect(plugin.handle_rpc_method("function", "FuncWithParamAndEval", [["test_param"],["some_eval"]]))
+        expect(plugin().handle_rpc_method("function", "FuncWithParamAndEval", [["test_param"],["some_eval"]]))
         |> to(eq {:ok, {"func_with_param_and_eval", ["test_param", "some_eval"]}})
       end
     end
@@ -163,33 +163,33 @@ defmodule NVim.PluginSpec do
       end
 
       let :plugin, do: PlugWithCommands
-      let :simple_command_spec, do: Enum.at(plugin.specs, 0)
-      let :command_with_params_spec, do: Enum.at(plugin.specs, 1)
-      let :command_with_eval_spec, do: Enum.at(plugin.specs, 2)
-      let :command_with_range_spec, do: Enum.at(plugin.specs, 3)
-      let :command_with_all_opts_spec, do: Enum.at(plugin.specs, 4)
-      let :command_with_complete_spec, do: Enum.at(plugin.specs, 5)
+      let :simple_command_spec, do: Enum.at(plugin().specs, 0)
+      let :command_with_params_spec, do: Enum.at(plugin().specs, 1)
+      let :command_with_eval_spec, do: Enum.at(plugin().specs, 2)
+      let :command_with_range_spec, do: Enum.at(plugin().specs, 3)
+      let :command_with_all_opts_spec, do: Enum.at(plugin().specs, 4)
+      let :command_with_complete_spec, do: Enum.at(plugin().specs, 5)
 
       it "creates a proper specification" do
-        expect(simple_command_spec) |> to(have {:type, "command"})
-        expect(simple_command_spec) |> to(have {:name, "SimpleCommand"})
-        expect(simple_command_spec) |> to(have {:sync, false})
+        expect(simple_command_spec()) |> to(have {:type, "command"})
+        expect(simple_command_spec()) |> to(have {:name, "SimpleCommand"})
+        expect(simple_command_spec()) |> to(have {:sync, false})
 
-        expect(command_with_params_spec) |> to(have {:name, "CommandWithParams"})
-        expect(command_with_params_spec.opts) |> to(have {:nargs, "*"})
+        expect(command_with_params_spec()) |> to(have {:name, "CommandWithParams"})
+        expect(command_with_params_spec().opts) |> to(have {:nargs, "*"})
 
-        expect(command_with_eval_spec) |> to(have {:name, "CommandWithEval"})
-        expect(command_with_eval_spec.opts) |> to(have {:eval, "[col('.')]"})
+        expect(command_with_eval_spec()) |> to(have {:name, "CommandWithEval"})
+        expect(command_with_eval_spec().opts) |> to(have {:eval, "[col('.')]"})
 
-        expect(command_with_range_spec) |> to(have {:name, "CommandWithRange"})
-        expect(command_with_range_spec.opts) |> to(have {:range, "%"})
+        expect(command_with_range_spec()) |> to(have {:name, "CommandWithRange"})
+        expect(command_with_range_spec().opts) |> to(have {:range, "%"})
 
-        expect(command_with_all_opts_spec) |> to(have {:name, "CommandWithAllOpts"})
-        expect(command_with_all_opts_spec.opts) |> to(have {:nargs, "*"})
-        expect(command_with_all_opts_spec.opts) |> to(have {:eval, "[some_value_eval]"})
-        expect(command_with_all_opts_spec.opts) |> to(have {:range, "%"})
+        expect(command_with_all_opts_spec()) |> to(have {:name, "CommandWithAllOpts"})
+        expect(command_with_all_opts_spec().opts) |> to(have {:nargs, "*"})
+        expect(command_with_all_opts_spec().opts) |> to(have {:eval, "[some_value_eval]"})
+        expect(command_with_all_opts_spec().opts) |> to(have {:range, "%"})
 
-        expect(command_with_complete_spec.opts) |> to(have {:complete, "file"})
+        expect(command_with_complete_spec().opts) |> to(have {:complete, "file"})
       end
 
       it "addes command handlers" do
