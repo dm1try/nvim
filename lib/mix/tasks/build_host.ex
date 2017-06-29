@@ -26,11 +26,6 @@ defmodule Mix.Tasks.Nvim.BuildHost do
 
     create_file Path.join([@host_path, "mix.exs"]), host_mixfile(), force: true
     create_file Path.join([@host_path, "config", "config.exs"]), host_config_text(), force: true
-
-    case System.cmd "mix", ["do", "deps.get,","escript.build", "--force"], cd: @host_path do
-      {_, 0} -> update_neovim_remote_plugins()
-      _ -> :ignore
-    end
   end
 
   defp plugin_apps_in_vim_runtime do
@@ -38,23 +33,6 @@ defmodule Mix.Tasks.Nvim.BuildHost do
       {:ok, ""} -> []
       {:ok, response} -> String.split(response, "\n")
       _ -> []
-    end
-  end
-
-  defp update_neovim_remote_plugins do
-    {:ok, response} = RPC.Session.call(@nvim_session, "nvim_command_output", ["UpdateRemotePlugins"])
-
-    if Regex.match?(~r/elixir host registered/, response) do
-      Mix.shell.info [:green, """
-
-      Remote plugins were updated. Restart neovim instances.
-      """]
-    else
-      Mix.shell.info [:red, """
-
-      Problem with updating the remote plugins. See the elixir host log for more information.
-      #{inspect response}
-      """]
     end
   end
 
@@ -92,11 +70,7 @@ defmodule Mix.Tasks.Nvim.BuildHost do
     end
 
     def application do
-      [applications: [:logger, :nvim], env: [plugin_module: NVim.Host.Plugin]]
-    end
-
-    def escript do
-      [main_module: NVim.Host, emu_args: "-noinput"]
+      [applications: [:logger, :nvim], env: [plugin_module: NVim.Host.Plugin], mod: {NVim.Host, []}]
     end
 
     defp deps do

@@ -1,5 +1,7 @@
 defmodule NVim do
   defmodule Host do
+    use Application
+
     alias MessagePack.{RPC, Transports}
     alias NVim.PluginManager
 
@@ -15,9 +17,7 @@ defmodule NVim do
       NVim.API.injects_methods(function_specs, @session)
     end
 
-    def main(_args) do
-      Logger.info("Starting NeoVim elixir host...")
-
+    def start(_, _) do
       children = [
         worker(Transports.Port, [[link: {:fd, 0, 1}, session: @session],[name: @port]]),
         worker(RPC.Session, [[method_handler: NVim.Host.Handler, transport: @port],[name: @session]]),
@@ -25,8 +25,7 @@ defmodule NVim do
         supervisor(PluginManager.Supervisor,[])
       ]
 
-      {:ok, _} = Supervisor.start_link(children, strategy: :one_for_one)
-      :timer.sleep :infinity # no-halt
+      Supervisor.start_link(children, strategy: :one_for_one)
     end
   end
 end
