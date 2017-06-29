@@ -65,8 +65,8 @@ defmodule Mix.Tasks.Nvim.BuildHost do
        deps_path: "../../deps",
        lockfile: "../../mix.lock",
        elixir: "~> 1.3",
-       deps: deps,
-       escript: escript]
+       deps: deps(),
+       escript: escript()]
     end
 
     def application do
