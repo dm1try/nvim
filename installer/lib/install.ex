@@ -60,26 +60,18 @@ defmodule Mix.Tasks.Nvim.Install do
   """
 
   embed_text :elixir_host_plugin_vim, """
-  let s:nvim_path = expand('<sfile>:p:h:h')
-  let s:xdg_home_path = expand('<sfile>:p:h:h:h')
+  let s:elixir_host_app_path = expand('<sfile>:p:h:h') . '/rplugin/elixir/apps/host'
 
-  function! s:RequireElixirHost(host)
-    try
-      let channel_id = rpcstart(s:nvim_path . '/rplugin/elixir/apps/host/host',[])
-      if rpcrequest(channel_id, 'poll') == 'ok'
-        return channel_id
-      endif
-    catch
-    endtry
-    throw 'Failed to load elixir host.' . expand('<sfile>') .
-      \ ' More information can be found in elixir host log file.'
-  endfunction
+  function! ElixirRequire(host)
+    " orig_name != name when :UpdateRemotePlugins is called
+    if a:host['orig_name'] != a:host['name']
+      call system('cd ' . s:elixir_host_app_path . ' && mix do nvim.build_host, compile --force')
+    endif
 
-  call remote#host#Register('elixir', '{scripts/*_plugin.exs,apps/*}', function('s:RequireElixirHost'))
+    return jobstart(['elixir', '--erl', '-noinput','-S', 'mix', 'run', '--no-halt', '--no-compile', '--no-deps-check', '--no-archives-check'], {'cwd': s:elixir_host_app_path, 'rpc': v:true})
+endfunction
 
-  function! UpdateElixirPlugins()
-    execute '!cd ' . s:nvim_path . '/rplugin/elixir && mix nvim.build_host'
-  endfunction
-  command! UpdateElixirPlugins call UpdateElixirPlugins()
+
+  call remote#host#Register('elixir', '{scripts/*_plugin.exs,apps/*}', function('ElixirRequire'))
   """
 end
