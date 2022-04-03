@@ -1,5 +1,16 @@
 defmodule NVim.Host.PluginSpec do
-  use ESpec, integration: true
+  use ESpec
+
+  before do
+    {:ok, integration_session} = NVim.Test.Integration.start_host_session("#{__DIR__}/../fixtures")
+    integration_session
+
+    {:shared, integration_session: integration_session}
+  end
+
+  finally do
+    NVim.Session.Embed.stop(shared.integration_session)
+  end
 
   it "displays host information" do
     {:ok, _} = IntegrationTest.Session.nvim_command("ElixirHostInfo")
