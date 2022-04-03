@@ -23,7 +23,7 @@ defmodule NVim.PluginManagerSpec do
 
     it "lookups the plugin for provided path" do
       {:ok, module} = PluginManager.lookup(fixture_plugin_path())
-      expect(module).to eq(PluginApp)
+      expect module |> to eq PluginApp
     end
 
     context "multiple lookups" do
@@ -32,7 +32,7 @@ defmodule NVim.PluginManagerSpec do
       end
 
       it "lookups the plugin" do
-        expect(PluginManager.lookup(fixture_plugin_path())).to eq({:ok, PluginApp})
+        PluginManager.lookup(fixture_plugin_path()) |> to eq {:ok, PluginApp}
       end
     end
   end
@@ -42,14 +42,14 @@ defmodule NVim.PluginManagerSpec do
 
     it "lookups the plugin for provided path" do
       {:ok, module} = PluginManager.lookup(fixture_plugin_path())
-      expect(module).to eq(PluginScript)
+      expect module |> to eq PluginScript
     end
   end
 
 
   describe ".started_plugins" do
     it "returns empty list if no started plugins" do
-      expect(PluginManager.started_plugins).to eq([])
+      expect PluginManager.started_plugins |> to eq []
     end
 
     context "some plugins are already started" do
@@ -61,7 +61,7 @@ defmodule NVim.PluginManagerSpec do
       end
 
       it "returns list of started plugins" do
-        expect(PluginManager.started_plugins).to eq([PluginScript])
+        expect PluginManager.started_plugins |> to eq [PluginScript]
       end
     end
   end

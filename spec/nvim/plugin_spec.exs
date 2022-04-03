@@ -12,7 +12,7 @@ defmodule NVim.PluginSpec do
     let :plugin, do: EmptyPlugin
 
     it "returns empty specs" do
-      expect(plugin().specs).to eq([])
+      expect(plugin().specs) |> to eq([])
     end
   end
 

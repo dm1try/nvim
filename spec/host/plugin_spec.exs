@@ -10,7 +10,7 @@ defmodule NVim.Host.PluginSpec do
 
     last_message = response |> String.split("\n") |> List.last
 
-    expect(last_message).to have("Host version")
-    expect(last_message).to have("Running plugins: [NVim.Host.Plugin]")
+    expect last_message |> to(have "Host version")
+    expect last_message |> to(have "Running plugins: [NVim.Host.Plugin]")
   end
 end

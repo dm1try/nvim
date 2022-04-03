@@ -21,20 +21,18 @@ defmodule NVim.ApiSpec do
   end
 
   it "injects and proxies vim API" do
-    expect(@session_name.nvim_get_api_info()).to eq(
-      RPC.Session.call(@session_name, "nvim_get_api_info", [])
-    )
+    @session_name.nvim_get_api_info() |> to eq RPC.Session.call(@session_name, "nvim_get_api_info", [])
   end
 
   it "injects with params" do
-    expect(@session_name.nvim_command_output("echo 123")).to eq({:ok, "\n123"})
+    @session_name.nvim_command_output("echo 123") |> to eq {:ok, "123"}
   end
 
   it "works with types" do
     import @session_name
 
     {:ok, buffer} = nvim_get_current_buf()
-    expect(buffer_set_line(buffer, 0, "test")).to eq({:ok, nil})
-    expect(nvim_get_current_line()).to eq({:ok, "test"})
+    buffer_set_line(buffer, 0, "test") |> to eq {:ok, nil}
+    nvim_get_current_line() |> to eq {:ok, "test"}
   end
 end
