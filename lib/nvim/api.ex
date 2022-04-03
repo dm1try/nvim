@@ -3,6 +3,7 @@ defmodule NVim.API do
     defmodule module_name do
       funcs = Enum.map func_specs, fn (%{"name" => name, "parameters" => params} = _spec)->
         params = Enum.map params, fn([_type, name])->
+          name = if name == "fn" do "_fn" else name end
           name |> String.to_atom |> Macro.var(nil)
         end
 
