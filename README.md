@@ -10,13 +10,13 @@ Implements support for Neovim remote plugins written in Elixir.
 Install the host archive, we will use it to build the host locally.
 
 ```
-$ mix archive.install https://github.com/dm1try/nvim/releases/download/v0.4.2/nvim.ez
+mix archive.install https://github.com/dm1try/nvim/releases/download/v0.4.2/nvim.ez
 ```
 
 Build and install the host by running `nvim.install` and providing the path to nvim config(`~/.config/nvim` by default on linux systems)
 
 ```
-$ mix nvim.install /path/to/nvim/config
+mix nvim.install /path/to/nvim/config
 ```
 ## Upgrade
 Same as the install step but if you have any problem try to remove the host at first:
